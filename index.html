@@ -146,6 +146,10 @@ nav.stuck{
   justify-content:center;padding:120px 5% 80px;
   position:relative;overflow:hidden;
 }
+@media(min-width:900px){
+  .hero>.container,.hero>*:not(.hero-card){max-width:58%}
+  .hero-h1{font-size:clamp(48px,5.5vw,80px)!important}
+}
 
 /* Animated gradient mesh */
 .hero-mesh{
@@ -200,8 +204,10 @@ nav.stuck{
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,208,122,.4)}50%{box-shadow:0 0 0 6px rgba(34,208,122,0)}}
 
 /* Headline */
+.hero-inner{position:relative;z-index:4}
+@media(min-width:900px){.hero-inner{max-width:56%}}
 .hero-h1{
-  font-size:clamp(48px,7.5vw,96px);
+  font-size:clamp(40px,5.8vw,88px);
   font-weight:800;line-height:.95;letter-spacing:-.04em;
   color:var(--text);margin-bottom:12px;
 }
@@ -254,9 +260,11 @@ nav.stuck{
 
 /* Floating dashboard card */
 .hero-card{
-  position:absolute;right:5%;top:50%;transform:translateY(-50%);
-  width:340px;z-index:3;
+  position:absolute;right:2%;top:50%;transform:translateY(-50%);
+  width:300px;z-index:3;
 }
+@media(min-width:1400px){.hero-card{right:4%;width:320px}}
+@media(max-width:1100px){.hero-card{right:1%;width:270px}}
 .dash-card{
   background:var(--bg2);border:1px solid var(--border);
   border-radius:16px;overflow:hidden;
@@ -1217,7 +1225,6 @@ footer{
    RESPONSIVE
 ============================================================ */
 @media(max-width:1100px){
-  .hero-card{display:none}
   .founder-grid,.booking-grid,.faq-grid{grid-template-columns:1fr}
   .services-head{grid-template-columns:1fr}
   .services-grid,.results-grid,.testis,.plans{grid-template-columns:1fr;background:transparent;gap:12px}
@@ -1233,6 +1240,7 @@ footer{
 }
 @media(max-width:768px){
   .nav-links,.nav-right{display:none}
+  .hero-card{display:none}
   .ham{display:flex}
   .section{padding:80px 5%}
   .hero{padding:100px 5% 70px}
@@ -1247,7 +1255,35 @@ footer{
   .bsummary{grid-template-columns:1fr}
   .compare-head,.compare-row{grid-template-columns:1fr 1fr}
 }
+
+/* ═══ BOOKING DASHBOARD ═══ */
+.rk-tab{
+  padding:10px 16px;font-size:12px;font-weight:700;
+  background:none;border:none;border-bottom:2px solid transparent;
+  color:var(--muted);cursor:pointer;transition:all .2s;margin-bottom:-1px;
+}
+.rk-tab.act{color:var(--accent2);border-bottom-color:var(--accent);}
+.rk-tab:hover:not(.act){color:var(--text);}
+.rk-bk-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:12px;
+  padding:14px 16px;margin-bottom:8px;display:grid;
+  grid-template-columns:1fr auto;gap:8px;align-items:start;
+}
+.rk-bk-card:hover{border-color:rgba(124,109,250,.3);}
+.rk-bk-date{font-size:12px;font-weight:800;color:var(--accent2);}
+.rk-bk-name{font-size:14px;font-weight:700;color:var(--text);margin:2px 0;}
+.rk-bk-meta{font-size:11px;color:var(--dim);line-height:1.7;}
+.rk-bk-badge{
+  font-size:10px;font-weight:800;padding:3px 10px;border-radius:100px;
+  background:rgba(34,208,122,.1);border:1px solid rgba(34,208,122,.2);color:var(--green);
+  white-space:nowrap;
+}
+.rk-bk-badge.past{background:rgba(255,255,255,.04);border-color:var(--border);color:var(--dim);}
+.rk-bk-badge.today{background:rgba(255,165,0,.1);border-color:rgba(255,165,0,.3);color:orange;}
+.rk-empty{text-align:center;padding:40px 20px;color:var(--dim);font-size:13px;}
 </style>
+  <!-- Razorpay Payment Gateway -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
 
@@ -1524,7 +1560,7 @@ footer{
         <div class="plan-tag">Aapki Growth Journey ka pehla kadam</div>
         <div class="plan-price" data-m="₹4,999" data-q="₹4,249">₹4,999</div>
         <div class="plan-per">/month + GST</div>
-        <div class="plan-note">Only ₹166/day · 3-month minimum</div>
+        <div class="plan-note">☕ Ek chai se bhi sasta — sirf ₹166/day · 3-month minimum</div>
         <div class="divider"></div>
         <div class="plan-feats">
           <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>2–3 Performance Campaigns</div>
@@ -1534,7 +1570,7 @@ footer{
           <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>Monthly Performance Report</div>
         </div>
         <div class="plan-disc">Ad spend billed separately.</div>
-        <a href="https://wa.me/918756773118?text=Hi%20Ritikesh!%20Growth%20Partner%20plan." target="_blank" class="plan-cta">Get Started</a>
+        <a href="#" onclick="openRazorpay('growth')" class="plan-cta">Pay Now — ₹4,999</a>
       </div>
       <div class="plan hot rv d1">
         <div class="plan-rec">Most Recommended</div>
@@ -1554,7 +1590,7 @@ footer{
           <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>Real-time Revenue Dashboard</div>
         </div>
         <div class="plan-disc">We earn more when you earn more.</div>
-        <a href="https://wa.me/918756773118?text=Hi%20Ritikesh!%20Performance%20Partner%20plan." target="_blank" class="plan-cta">Apply Now</a>
+        <a href="#" onclick="openRazorpay('performance')" class="plan-cta">Pay Now — ₹12,999</a>
       </div>
       <div class="plan rv d2">
         <div class="plan-tier">Enterprise</div>
@@ -1573,9 +1609,21 @@ footer{
           <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>AI Optimisation Engine</div>
         </div>
         <div class="plan-disc">Deep integration, maximum compounding.</div>
-        <a href="https://wa.me/918756773118?text=Hi%20Ritikesh!%20Scale%20Partner%20plan." target="_blank" class="plan-cta">Apply Now</a>
+        <a href="#" onclick="openRazorpay('scale')" class="plan-cta">Apply Now →</a>
       </div>
     </div>
+    <!-- Payment Methods Strip -->
+    <div class="rv" style="margin-top:32px;padding:20px 28px;background:var(--bg1);border:1px solid rgba(124,109,250,.15);border-radius:16px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+      <div style="font-size:13px;font-weight:700;color:var(--text);letter-spacing:-.01em">Payment Methods</div>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <span style="background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--accent2)">🏦 Bank Transfer (NEFT/IMPS)</span>
+        <span style="background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--accent2)">📱 UPI</span>
+        <span style="background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--accent2)">💳 Razorpay (Card/EMI)</span>
+        <span style="background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--accent2)">🌐 International Wire</span>
+      </div>
+      <div style="margin-left:auto;font-size:11px;color:var(--dim)">GST Invoice provided · 3-month lock-in</div>
+    </div>
+
     <div class="enterprise rv" style="margin-top:1px">
       <div>
         <div class="ent-name">Strategic Profit Partner <span class="ent-badge">Application Only</span></div>
@@ -1890,7 +1938,7 @@ footer{
   <svg id="ai-fab-close" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" style="display:none">
     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
   </svg>
-  <span id="ai-fab-label">Marketing AI</span>
+  <span id="ai-fab-label">Ask Pooja</span>
 </button>
 
 <!-- Drawer -->
@@ -1907,8 +1955,8 @@ footer{
         </svg>
       </div>
       <div>
-        <div class="aid-name">Ritikesh's Marketing AI</div>
-        <div class="aid-status"><span class="aid-dot"></span>Online · Powered by Claude AI</div>
+        <div class="aid-name">Pooja — Marketing AI</div>
+        <div class="aid-status"><span class="aid-dot"></span>Online · JustDigital.Clicks</div>
       </div>
     </div>
     <div style="display:flex;gap:6px;align-items:center">
@@ -1939,6 +1987,76 @@ footer{
     </button>
   </div>
   <div class="aid-footer">Ask about Meta Ads, ROAS, Google Ads, pricing, funnels & more</div>
+</div>
+
+<!-- ═══ RITIKESH DASHBOARD BUTTON (hidden, Konami-style: triple-click bottom-right corner) ═══ -->
+<button id="rk-dash-btn" onclick="openRKDash()" title="Booking Dashboard" style="
+  position:fixed;bottom:90px;right:26px;z-index:700;
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:rgba(124,109,250,.15);border:1px solid rgba(124,109,250,.3);
+  color:var(--accent2);cursor:pointer;font-size:18px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .3s;opacity:.5;
+" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=.5">
+  📅
+</button>
+
+<!-- ═══ BOOKING DASHBOARD MODAL ═══ -->
+<div id="rk-dash-overlay" onclick="if(event.target===this)closeRKDash()" style="
+  display:none;position:fixed;inset:0;z-index:900;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:20px;
+">
+  <div style="
+    background:var(--bg1);border:1px solid rgba(124,109,250,.25);
+    border-radius:20px;width:100%;max-width:720px;max-height:85vh;
+    overflow:hidden;display:flex;flex-direction:column;
+    box-shadow:0 32px 80px rgba(0,0,0,.6);
+  ">
+    <!-- Header -->
+    <div style="padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+      <div>
+        <div style="font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.02em">📅 Booking Dashboard</div>
+        <div style="font-size:12px;color:var(--dim);margin-top:3px">3 months persistent memory · <span id="rk-total-count">0</span> total bookings</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="exportBookings()" style="
+          font-size:11px;font-weight:700;padding:7px 14px;border-radius:8px;
+          background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.25);
+          color:var(--accent2);cursor:pointer;transition:all .2s;
+        " onmouseenter="this.style.background='rgba(124,109,250,.2)'" onmouseleave="this.style.background='rgba(124,109,250,.1)'">
+          ⬇ Export CSV
+        </button>
+        <button onclick="clearAllBookings()" style="
+          font-size:11px;font-weight:700;padding:7px 14px;border-radius:8px;
+          background:rgba(255,80,80,.08);border:1px solid rgba(255,80,80,.2);
+          color:#ff6b6b;cursor:pointer;
+        ">🗑 Clear All</button>
+        <button onclick="closeRKDash()" style="
+          width:32px;height:32px;border-radius:8px;border:1px solid var(--border);
+          background:none;color:var(--muted);cursor:pointer;font-size:16px;
+          display:flex;align-items:center;justify-content:center;
+        ">✕</button>
+      </div>
+    </div>
+    <!-- Tabs -->
+    <div style="display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0;padding:0 24px">
+      <button class="rk-tab act" id="rk-tab-upcoming" onclick="switchDashTab('upcoming')">Upcoming</button>
+      <button class="rk-tab" id="rk-tab-all" onclick="switchDashTab('all')">All Bookings</button>
+      <button class="rk-tab" id="rk-tab-today" onclick="switchDashTab('today')">Today</button>
+    </div>
+    <!-- Content -->
+    <div id="rk-dash-body" style="flex:1;overflow-y:auto;padding:16px 24px"></div>
+    <!-- Make.com webhook note -->
+    <div style="padding:12px 24px;border-top:1px solid var(--border);background:rgba(124,109,250,.04);flex-shrink:0">
+      <div style="font-size:11px;color:var(--dim);line-height:1.6">
+        💡 <strong style="color:var(--accent2)">Auto WhatsApp + Email:</strong> 
+        Make.com webhook set karo → <code style="background:var(--bg3);padding:2px 6px;border-radius:4px;font-size:10px">MAKE_WEBHOOK_URL</code> 
+        variable update karo → bookings automatically notify hone lagenge.
+        <a href="https://make.com" target="_blank" style="color:var(--accent2);text-decoration:none">make.com →</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 <a href="https://wa.me/918756773118?text=Hi%20Ritikesh!" target="_blank" class="wa-float">
@@ -2006,6 +2124,93 @@ const NO_DAYS=[0,6];
 const BLOCKED=['2025-03-15','2025-03-22','2025-04-14'];
 let calY,calM,selDate=null,selTime=null,bkData={};
 
+/* ═══════════════════════════════════════════════════════════
+   PERSISTENT BOOKING MEMORY — localStorage (3 months)
+═══════════════════════════════════════════════════════════ */
+const BK_KEY='jdc_bookings_v1';
+const BK_MONTHS=3;
+
+/* ═══════════════════════════════════════════════════════
+   GOOGLE SHEETS SYNC — Real-time slot blocking
+   Set SHEET_CSV_URL below to your Google Sheet published CSV
+   Sheet → File → Share → Publish to web → CSV → Copy URL
+════════════════════════════════════════════════════════ */
+const SHEET_CSV_URL = ''; /* ← Paste your Google Sheet CSV URL here */
+
+async function syncSheetBookings(){
+  if(!SHEET_CSV_URL) return; /* Skip if not configured */
+  try{
+    const r = await fetch(SHEET_CSV_URL+'&t='+Date.now()); /* Cache bust */
+    const text = await r.text();
+    const rows = text.split('\n').slice(1); /* Skip header */
+    rows.forEach(row=>{
+      const cols = row.split(',');
+      const date = (cols[1]||'').trim().replace(/"/g,'');
+      const time = (cols[2]||'').trim().replace(/"/g,'');
+      if(date && time){
+        /* Convert DD/MM/YYYY to YYYY-MM-DD for internal key */
+        const parts = date.split('/');
+        if(parts.length===3){
+          const key = parts[2]+'-'+parts[1].padStart(2,'0')+'-'+parts[0].padStart(2,'0');
+          bkSave(key, time.replace(' IST','').trim());
+        }
+      }
+    });
+  }catch(e){ /* Silent fail — localStorage fallback still works */ }
+}
+
+/* Call on page load */
+window.addEventListener('DOMContentLoaded', syncSheetBookings);
+
+function bkLoad(){
+  try{
+    const raw=localStorage.getItem(BK_KEY);
+    if(!raw) return {};
+    const data=JSON.parse(raw);
+    const cutoff=new Date();
+    cutoff.setMonth(cutoff.getMonth()-BK_MONTHS);
+    const pruned={};
+    Object.entries(data).forEach(([dk,slots])=>{
+      if(new Date(dk)>=cutoff) pruned[dk]=slots;
+    });
+    return pruned;
+  }catch(e){return {};}
+}
+
+function bkSave(dateKey,slot){
+  try{
+    const data=bkLoad();
+    if(!data[dateKey]) data[dateKey]=[];
+    if(!data[dateKey].includes(slot)) data[dateKey].push(slot);
+    localStorage.setItem(BK_KEY,JSON.stringify(data));
+    bookedSlots=data;
+    /* re-render slots if same date is open */
+    if(selDate===dateKey) renderSlots(dateKey);
+  }catch(e){}
+}
+
+function bkSaveDetailed(dateKey,slot,cd){
+  try{
+    const K='jdc_bk_details_v1';
+    const arr=JSON.parse(localStorage.getItem(K)||'[]');
+    arr.push({id:'BK'+Date.now(),dateKey,slot,name:cd.name,biz:cd.biz,
+      phone:cd.phone,email:cd.email,budget:cd.budget,
+      challenge:cd.challenge,industry:cd.industry||'',
+      format:cd.format,bookedAt:new Date().toISOString()});
+    if(arr.length>90) arr.splice(0,arr.length-90);
+    localStorage.setItem(K,JSON.stringify(arr));
+  }catch(e){}
+}
+
+function bkGetAll(){
+  try{return JSON.parse(localStorage.getItem('jdc_bk_details_v1')||'[]');}
+  catch(e){return [];}
+}
+
+/* Load persisted bookings instantly on page load */
+let bookedSlots=bkLoad();
+let sessionBooked={};
+
 function initCal(){
   const n=new Date();calY=n.getFullYear();calM=n.getMonth();
   const h=document.getElementById('calDH');
@@ -2050,13 +2255,11 @@ function nM(){if(calM===11){calM=0;calY++}else calM++;renderCal()}
 /* ═══════════════════════════════════════════════
    DYNAMIC SLOT SYSTEM
 ═══════════════════════════════════════════════ */
-const ALL_SLOTS={Morning:['9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM'],Afternoon:['12:00 PM','12:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM'],Evening:['4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM','6:30 PM']};
-let bookedSlots={};
-let sessionBooked={};
 
 function isSlotBooked(dk,slot){return(bookedSlots[dk]||[]).includes(slot)||(sessionBooked[dk]||[]).includes(slot)}
 
 function renderSlots(dk){
+
   const c=document.getElementById('slots-container');c.innerHTML='';
   c.innerHTML+=`<div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap">
     <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--dim);font-weight:600"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block"></span>Selected</div>
@@ -2082,7 +2285,8 @@ function sT(el,time){
   document.querySelectorAll('.tslot.sel').forEach(b=>b.classList.remove('sel'));
   el.classList.add('sel');
   const b=document.getElementById('btn2');b.disabled=false;
-  b.innerHTML='Chat & Confirm Booking <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9,3 14,8 9,13"/></svg>';
+  b.innerHTML='✅ Confirm: '+selTime+' Slot <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9,3 14,8 9,13"/></svg>';
+  b.style.background='var(--accent)';b.style.color='#fff';b.style.borderColor='var(--accent)';
 }
 
 function gS(n){
@@ -2097,6 +2301,7 @@ function gS(n){
   if(n===2){
     const p=selDate.split('-');const d=new Date(+p[0],+p[1]-1,+p[2]);
     document.getElementById('tdlbl').textContent=d.toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    document.getElementById('btn2').innerHTML='Select a Time ↑ <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9,3 14,8 9,13"/></svg>';
     renderSlots(selDate);
   }
   if(n===3){
@@ -2122,7 +2327,7 @@ let chatState={step:0,mode:'booking',data:{firstName:'',lastName:'',phone:'',ema
 const BOOKING_FLOW=[
   {
     key:'firstName',
-    ask:d=>`👋 Hi! I'm <strong>Ria</strong> — Ritikesh's AI Marketing Assistant.<br>I'll confirm your <strong>${document.getElementById('sTime').textContent}</strong> slot on <strong>${document.getElementById('sDate').textContent}</strong> and make sure Ritikesh is fully prepared for your call.<br><br>First, what's your <strong>name</strong>? 😊`,
+    ask:d=>`👋 Hi! I'm <strong>Pooja</strong> — Ritikesh's AI Marketing Assistant.<br>I'll confirm your <strong>${document.getElementById('sTime').textContent}</strong> slot on <strong>${document.getElementById('sDate').textContent}</strong> and make sure Ritikesh is fully prepared for your call.<br><br>First, what's your <strong>name</strong>? 😊`,
     validate:v=>v.trim().length>=2?null:'Please enter at least 2 characters.',
     quick:null
   },
@@ -2210,8 +2415,8 @@ const MARKETING_KB = {
     'Common CRO fixes that double conversions: faster page load speed, clear single CTA, social proof above the fold, removing navigation distractions, adding trust signals (testimonials, media logos), and matching the ad message exactly on the landing page.'
   ],
   pricing:[
-    'JustDigital.Clicks has three main plans: Growth Partner at ₹4,999/month (perfect for starting), Performance Partner at ₹12,999/month + 5% performance bonus (most popular), and Scale Partner at ₹24,999/month + 8-12% revenue share. Ad spend is always separate. There\'s also a Strategic Profit Partner for ₹50L+ revenue brands by application.',
-    'The Performance Partner plan is the most popular because of the aligned incentive model — JustDigital earns more only when you earn more. This means your goals are 100% aligned. Minimum ₹75K/month ad spend required.'
+    'Teen plans hain:\n\n💡 **Growth Partner — ₹4,999/month** (sirf ₹166/day!)\n2-3 campaigns, AI creative support, monthly strategy call. Beginners ke liye perfect.\n\n🚀 **Performance Partner — ₹12,999/month** *(Most Popular)*\n+ 5% performance bonus. Full automation, WhatsApp flows, bi-weekly calls. Hum tab zyada kamate hain jab aap kamate hain.\n\n⚡ **Scale Partner — ₹24,999/month**\n+ 8-12% revenue share. Meta + Google full system, dedicated growth manager.\n\nSab mein ad spend alag hota hai. Kaunsa plan aapke liye fit hoga — budget aur goals batao?',
+    'Performance Partner sabse popular isliye hai kyunki aligned incentive model hai — JustDigital tab zyada kamaata hai jab aap zyada kamaate hain. Iska matlab hai 100% goals aligned. ₹75K/month minimum ad spend chahiye. Lekin agar abhi start kar rahe ho — Growth Partner se shuru karo, upgrade anytime.'
   ],
   ai:[
     'JustDigital.Clicks uses AI in three ways: 1) Creative generation — AI creates 20–50 ad variations tested simultaneously, 2) Budget optimisation — AI reallocates budget in real-time to top-performing campaigns, 3) Audience refinement — AI identifies lookalike patterns from your best customers and expands targeting intelligently.',
@@ -2245,6 +2450,7 @@ function getAIAnswer(question){
   else if(/funnel|tofu|mofu|bofu|awareness|retarget/i.test(q)) answer=MARKETING_KB.funnel[Math.floor(Math.random()*MARKETING_KB.funnel.length)];
   else if(/whatsapp|crm|automat|follow.?up|nurtur/i.test(q)) answer=MARKETING_KB.whatsapp[Math.floor(Math.random()*MARKETING_KB.whatsapp.length)];
   else if(/cro|conversion|landing page|landing/i.test(q)) answer=MARKETING_KB.cro[Math.floor(Math.random()*MARKETING_KB.cro.length)];
+  else if(/budget|spend|kitna|invest|monthly/i.test(q)) answer='Budget ke baare mein honest baat:\n\n💡 **₹10K-50K/month** → Growth Partner (₹4,999/mo). Small scale pe start karo.\n\n🚀 **₹75K-2L/month** → Performance Partner (₹12,999/mo). Best ROI here.\n\n⚡ **₹2L+/month** → Scale Partner ya Profit Partner.\n\nNote: Yeh ad spend Meta/Google ko jaata hai — JustDigital ka fee alag hota hai.\n\nAapka current monthly marketing budget kya hai?';
   else if(/price|pricing|cost|plan|₹|rupee|fee|charge/i.test(q)) answer=MARKETING_KB.pricing[Math.floor(Math.random()*MARKETING_KB.pricing.length)];
   else if(/ai|artificial|machine|automat/i.test(q)) answer=MARKETING_KB.ai[Math.floor(Math.random()*MARKETING_KB.ai.length)];
   else if(/result|case stud|proof|client|work/i.test(q)) answer=MARKETING_KB.results[Math.floor(Math.random()*MARKETING_KB.results.length)];
@@ -2379,8 +2585,20 @@ function finishChat(){
           <strong>WhatsApp confirmation sending automatically...</strong> 📲`);
 
         /* Block slot */
+        /* Persist booking to localStorage — survives refresh, 3 months memory */
+        bkSave(selDate, selTime);
+        /* Save full client details */
+        bkSaveDetailed(selDate, selTime, {
+          name: bkData.name||'', biz: bkData.biz||'', phone: bkData.phone||'',
+          email: bkData.email||'', budget: bkData.budget||'',
+          challenge: bkData.agenda||'', industry: bkData.industry||'',
+          format: bkData.fmt||''
+        });
+        /* Also block in session memory */
         if(!sessionBooked[selDate])sessionBooked[selDate]=[];
         sessionBooked[selDate].push(selTime);
+        /* Trigger Make.com webhook → auto WhatsApp + Email */
+        notifyMakeWebhook(bkData);
 
         /* Set bkData */
         bkData={name:`${d.firstName} ${d.lastName}`,biz:d.biz,date:dateStr,time:timeStr,phone:d.phone,email:d.email,agenda:d.challenge,budget:d.budget,fmt:d.format,industry:d.industry,meetLink};
@@ -2455,14 +2673,14 @@ function autoSendWA(){
 
 function showTyping(cb,delay=600){
   const t=document.createElement('div');t.className='chat-msg ai';
-  t.innerHTML=`<div class="chat-avatar" style="font-size:9px;letter-spacing:-.02em">Ria</div><div class="chat-bubble chat-typing"><span></span><span></span><span></span></div>`;
+  t.innerHTML=`<div class="chat-avatar" style="font-size:9px;letter-spacing:-.02em">P</div><div class="chat-bubble chat-typing"><span></span><span></span><span></span></div>`;
   chatBox().appendChild(t);scrollChat();
   setTimeout(()=>{t.remove();cb();},delay);
 }
 
 function addMsg(role,html){
   const m=document.createElement('div');m.className=`chat-msg ${role}`;
-  const aiAv=`<div class="chat-avatar" style="font-size:9px;letter-spacing:-.02em">Ria</div>`;
+  const aiAv=`<div class="chat-avatar" style="font-size:9px;letter-spacing:-.02em">P</div>`;
   const userAv=`<div class="chat-avatar" style="background:linear-gradient(135deg,var(--green),#0ea868);font-size:9px">You</div>`;
   m.innerHTML=role==='ai'?`${aiAv}<div class="chat-bubble">${html}</div>`:`<div class="chat-bubble">${html}</div>${userAv}`;
   chatBox().appendChild(m);scrollChat();
@@ -2494,39 +2712,102 @@ initCal();
 let aidOpen=false, aidHistory=[], aidTyping=false;
 
 /* ── System prompt for Claude API ── */
-const AID_SYSTEM=`You are "Ria" — the expert AI marketing assistant for JustDigital.Clicks, founded by Ritikesh Kataria.
+const AID_SYSTEM=`You are Pooja — the AI Marketing Strategist for JustDigital.Clicks, a performance marketing agency founded by Ritikesh Kataria.
 
-CRITICAL RULES:
-1. NEVER say "contact Ritikesh" or "WhatsApp karo" as a substitute for answering. ALWAYS answer the question yourself first. Only AFTER giving a complete answer, you may naturally mention a free strategy call if relevant.
-2. You are the expert. Behave like a senior performance marketer who genuinely helps.
-3. LANGUAGE: If user writes Hindi/Hinglish → reply in Hinglish. If English → reply in English. Never switch language mid-conversation unless user does.
-4. Be warm, smart, concise. Use emojis naturally — not excessively.
-5. Format: Use **bold** for key numbers/terms. Use bullet points for lists. Max ~180 words per reply unless deeply technical.
+You are NOT a chatbot. You are an expert marketing consultant, sales advisor, and client onboarding specialist — trained on 5+ years of real performance marketing experience.
+
+Your expertise:
+- Meta Ads & Facebook/Instagram advertising
+- Google Ads (Search, Display, PMAX, Shopping)
+- E-commerce growth & D2C scaling
+- Real Estate lead generation
+- Funnel building & conversion optimization
+- Customer psychology & sales persuasion
+- WhatsApp automation & lead nurturing
+- Indian market benchmarks & CPM/CPL data
+
+YOUR MISSION: Not just answer questions — but understand the client deeply, diagnose their marketing problems, suggest strategic solutions, build genuine trust, and naturally guide them toward booking a free strategy call with Ritikesh.
+
+═══════════════════════════════════════════
+LANGUAGE RULE (CRITICAL):
+- User Hindi/Hinglish mein likhe → Hinglish mein jawab do (Hindi + English mix)
+- User English mein likhe → English mein jawab do
+- Never switch mid-conversation unless user does
+- Be warm and human — never robotic or formal
+═══════════════════════════════════════════
+
+CONVERSATION FLOW (follow this arc every time):
+
+STEP 1 — WARM WELCOME
+When someone says Hi/Hello/Namaste or opens chat for the first time:
+Greet warmly like a real person. Introduce yourself briefly. Ask ONE soft question about their business.
+Example Hinglish: "Hey! 👋 Main hun Pooja — JustDigital.Clicks ki AI Marketing Strategist. Aap kaunsa business run karte ho?"
+Example English: "Hey! 👋 I'm Pooja, AI Marketing Strategist at JustDigital.Clicks. What kind of business do you run?"
+NEVER start with a list of services. NEVER ask "kya kaam hai?" coldly.
+
+STEP 2 — BUSINESS DISCOVERY (one question at a time)
+Uncover: business type, product/service, target audience, location, current ads running, monthly budget, biggest challenge.
+Always ONE question at a time. Listen. Then go deeper based on their answer.
+
+STEP 3 — DIAGNOSE THE PROBLEM
+After collecting info, analyze and clearly state what you see.
+Example: "Okay, samajh gaya. Tere case mein main 2-3 issues dekh raha hun — [specific issues]. Yeh actually common hai [industry] mein."
+Use real benchmarks to make diagnosis credible.
+
+STEP 4 — STRATEGIC ADVICE
+Give 2-4 specific, actionable recommendations tailored to their situation.
+Use real numbers: CPMs, ROAS benchmarks, CPL ranges, timelines.
+Make them feel: "Yeh banda/bandi actually jaanta/jaanti hai."
+
+STEP 5 — BUILD TRUST WITH PROOF
+Weave in naturally (not as a list dump):
+- "Ek real estate client tha — same problem. 28 se 120 qualified leads/month ho gaye in 60 days."
+- "Fashion brand — ₹50K se ₹4L+ monthly revenue, 60 days mein. ROAS 4.2x."
+- "Fitness chain — CPL ₹800 se ₹385, show-up rate 30% se 68% ho gaya."
+Use these when relevant, not always.
+
+STEP 6 — HANDLE OBJECTIONS (psychology-driven)
+"Bahut expensive hai" → "Samajh sakta/sakti hun. Ek second — agar ₹12,999 invest karke ₹1-2L extra revenue aaye, toh yeh cost hai ya investment? [real ROI example]. Aur honestly, Ritikesh sirf tab recommend karta hai jab numbers make sense karte hain."
+"Agencies kaam nahi karti" → "Fair point — bahut agencies sirf ads run karti hain. JustDigital ka approach alag hai — woh poora revenue system banate hain, sirf ad campaign nahi. Isliye performance bonus model hai — woh tab kamate hain jab aap kamate hain."
+"Soch ke batata hun" → "Bilkul, koi rush nahi. [One insight they haven't considered]. Yeh bhi dhyan mein rakhna jab decide karo."
+"Khud kar sakta hun" → "Haan, kar sakte ho! [Genuine tips]. Bas ek cheez miss hoti hai usually DIY mein — [specific gap]. Lekin haan, shuru toh kar sakte ho."
+"Pehle results dikhao" → "[Specific case study relevant to their industry]. Aur strategy call mein Ritikesh personally aapka account audit karta hai — koi charge nahi, zero commitment."
+
+STEP 7 — SUGGEST STRATEGY CALL (naturally, not pushy)
+Only AFTER trust is built AND problem is diagnosed. Say it ONCE, naturally:
+Hinglish: "Ek kaam karo — Ritikesh ki free 30-min strategy call book karo. Woh personally aapka current marketing audit karega aur batayega exactly kahan paise waste ho rahe hain aur kya karna chahiye. Koi commitment nahi, sirf honest advice. Book karo: justdigital.clicks/#book"
+English: "Here's what I'd suggest — book a free 30-min strategy call with Ritikesh. He personally audits your marketing and tells you exactly what's working, what's not, and what to fix. Zero commitment. Book here: justdigital.clicks/#book"
+
+STEP 8 — COLLECT INFO (if they agree to call)
+Ask for: Name, Business Name, Email, WhatsApp number.
+Say: "Main details note kar leta/leti hun — Ritikesh ka team confirm karega jaldi."
+
+STEP 9 — FOLLOW-UP MODE (if not ready)
+"Koi baat nahi! Ek kaam karo — main aapke business ke liye ek quick marketing audit suggestions de sakta/sakti hun abhi. Kaunsi cheez sabse zyada improve karni hai — leads, ROAS, ya conversions?"
+
+═══════════════════════════════════════════
+REAL BENCHMARKS (use confidently):
+META INDIA: CPM ₹80–₹200 | Cold CTR 1.5–3%, Warm 3–6% | CBO=scaling, ABO=testing | First 3 sec = 70% of performance | Reels>Carousel>Static | Freq <3.5
+GOOGLE: CPC ₹15–₹80 | QS 7+ = 28% cheaper | PMAX needs good feed | Smart Bidding needs 30-50 conv/mo
+ROAS: Ecomm 4–6x good, 8x+ excellent | Real Estate CPL ₹300–800 | Fitness CPL ₹80–200 | Education ₹150–400
+WHATSAPP: 85–95% open rate | Sequence: instant→2hr→24hr→72hr→7day | Show-up 30%→68% with automation
+FUNNEL: Most brands only run BOFU — miss 80% revenue potential
+CRO: India ecomm CVR 1.5–2.5% avg, 3–4% good | 1sec load delay = 7% CVR drop
 
 ABOUT JUSTDIGITAL.CLICKS:
-- AI-powered performance marketing agency for Indian brands
-- Founder: Ritikesh Kataria | hello@justdigital.clicks
-- Services: Meta Ads, Google Ads, Full-Funnel, CRO, WhatsApp Automation, Revenue Analytics
-- Results: Avg 4.1x ROAS, 10+ brands scaled
+- Founded by Ritikesh Kataria | hello@justdigital.clicks
+- AI-powered performance marketing for Indian brands
 - Plans: Growth Partner ₹4,999/mo | Performance Partner ₹12,999/mo + 5% bonus | Scale Partner ₹24,999/mo + revenue share
 - Free 30-min strategy call: justdigital.clicks/#book
+- Unique model: Performance bonus — JustDigital earns more only when YOU earn more
 
-REAL BENCHMARKS (always cite these):
-META ADS INDIA: CPM ₹80–₹200 | CTR cold 1.5–3%, warm 3–6% | CBO=scaling, ABO=testing | First 3 sec = 70% performance | Reels > Carousel > Static | Frequency <3.5 before refresh
-GOOGLE ADS: CPC ₹15–₹80 competitive | Quality Score 7+ = 28% cheaper CPC | PMAX = all inventory, needs good feed | Smart Bidding needs 30–50 conv/mo
-ROAS BENCHMARKS: Ecomm good 4–6x, excellent 8x+ | Real estate CPL ₹300–800 | Fitness CPL ₹80–200 | Education CPL ₹150–400
-CAC/LTV: LTV must be 3x+ CAC | Payback period <6 months | CAC = total spend / new customers
-WHATSAPP: Open rate 85–95% vs email 15% | Auto sequence: instant→2hr→24hr→72hr→7day | Show-up rate: 30% without nurture → 65–70% with automation
-FUNNEL: TOFU=awareness broad, MOFU=warm retarget, BOFU=converters | Only running BOFU = missing 80% revenue
-CRO: India ecomm CVR avg 1.5–2.5%, good 3–4%, excellent 5%+ | Speed: 1sec delay = 7% CVR drop | Testimonials above fold = +15–25% CVR
-AI MARKETING: Test 20–50 creative variants | AI bidding adjusts real-time | Lookalike 1% for scale, 2–3% broad
-
-CONVERSATION STYLE:
-- When user has a specific business problem → diagnose it, give 2-3 actionable steps, THEN optionally mention strategy call
-- When user asks what-is questions → explain clearly with Indian context/examples
-- When user asks about pricing → explain all plans clearly, benefits of each
-- When user seems stuck or confused → be encouraging, break it down simply
-- End responses with a relevant follow-up question to keep conversation going`;
+FORMAT RULES:
+- Short messages usually. 3-5 sentences max unless explaining something technical.
+- Bold only for KEY numbers or terms.
+- Max 1-2 emojis per message.
+- Never start with "Great question!" or "Absolutely!" — sounds fake.
+- End most messages with a question to keep conversation alive.
+- Never dump a list of services unprompted.`
 
 /* ── Deep knowledge base (fallback when no API) ── */
 const KB={
@@ -2620,10 +2901,12 @@ function getKBAnswer(userMsg){
       return ans[Math.floor(Math.random()*ans.length)](u);
     }
   }
-  /* Generic helpful fallback */
+  /* Warm, human fallback — dig into their situation */
   const generics=[
-    `Aapka question interesting hai! 🤔 Thoda aur detail doge toh main specifically help kar sakta hun.\n\nMain in topics pe expert hun:\n- **Meta & Google Ads** strategy\n- **ROAS improve** karna\n- **Lead generation** aur CPL reduce karna\n- **WhatsApp automation** setup\n- **Full funnel** strategy\n- **Pricing** aur plans\n\nKaunse topic pe baat karein?`,
-    `Great question! Is baare mein aur detail mein batao — **aapki industry kya hai** aur **current challenge kya hai**? Usse specific advice de sakta hun.\n\nOr direct poochho kisi bhi topic pe: Meta Ads, Google Ads, ROAS, leads, funnels, WhatsApp automation, pricing... sab kuch bata sakta hun! 💪`
+    `Haan batao! Aap kaunsi industry mein ho aur abhi marketing mein kya chal raha hai? 😊`,
+    `Interesting! Thoda aur batao — aapka goal kya hai abhi? Leads chahiye, revenue scale karna hai, ya kuch aur?`,
+    `Samajh gaya. Aur abhi kya kar rahe ho marketing mein — ads chal rahe hain, ya abhi start karna hai?`,
+    `Bilkul! Aapke business ke baare mein thoda batao — usse main specifically help kar sakta hun, generic advice se zyada useful hoga. 🎯`
   ];
   return generics[Math.floor(Math.random()*generics.length)];
 }
@@ -2631,16 +2914,17 @@ function getKBAnswer(userMsg){
 /* Smart follow-up suggestions based on conversation context */
 function getSmartSuggestions(userMsg, aiReply){
   const u=(userMsg+' '+aiReply).toLowerCase();
-  if(/meta|facebook|instagram|cbo|abo/i.test(u)) return ['CBO vs ABO kab use karein?','Reels ad banane ka formula?','Meta pixel setup kaise karein?','Retargeting audience kaise banayein?'];
-  if(/google|pmax|quality.?score/i.test(u)) return ['PMAX vs Search — kab kya?','Quality Score kaise badhayein?','Google Shopping ads tips?','Smart Bidding setup guide?'];
-  if(/roas|return|roi/i.test(u)) return ['Low ROAS diagnose kaise karein?','Creative testing ka sahi tarika?','Retargeting se ROAS kaise badhe?','Budget split kya hona chahiye?'];
-  if(/lead|cpl|show.?up/i.test(u)) return ['Lead quality improve kaise karein?','WhatsApp follow-up sequence?','Lead form best practices?','CPL reduce karne ke steps?'];
-  if(/whatsapp|automation|sequence/i.test(u)) return ['WhatsApp API vs Business — difference?','Best WhatsApp tool India mein?','Sequence mein kya bhejein?','CRM integration kaise karein?'];
-  if(/funnel|tofu|mofu|bofu/i.test(u)) return ['Budget funnel mein kaise split karein?','TOFU creative ideas?','Retargeting audience setup?','Funnel metrics track kaise karein?'];
-  if(/cro|conversion|landing/i.test(u)) return ['Landing page ka headline formula?','A/B testing kaise shuru karein?','Page speed fix kaise karein?','Above-fold elements kya hon?'];
-  if(/price|pricing|plan|₹/i.test(u)) return ['Performance Partner kya include hai?','Free strategy call kaise book karein?','Ad spend minimum kitna chahiye?','ROI guarantee kya hai?'];
-  if(/result|case|proof/i.test(u)) return ['Mere industry ke results kya hain?','Timeline kya expect karein?','Kaise verify karein results?','Free audit book karein?'];
-  return ['Meta Ads ROAS kaise badhaayein?','WhatsApp automation setup?','Mere liye best plan kaunsa?','Free strategy call book karein?'];
+  /* Suggestions feel like natural conversation continuations */
+  if(/meta|facebook|instagram|cbo|abo/i.test(u)) return ['Mera creative weak lagta hai','Budget sahi nahi jaa raha','Audience targeting samajh nahi aata','Ek audit karwa sakte hain?'];
+  if(/google|pmax|quality.?score/i.test(u)) return ['Keywords pe zyada spend ho raha hai','Conversion tracking set nahi hai','PMAX try karna chahta hun','Search vs Shopping — kya best hai?'];
+  if(/roas|return|roi/i.test(u)) return ['1.5x se upar nahi ja raha','Creative test karna chahta hun','Retargeting set nahi hai','Free audit kaise milega?'];
+  if(/lead|cpl|show.?up/i.test(u)) return ['Leads aa rahe hain par convert nahi','Follow-up system nahi hai','Fake leads bahut aa rahe hain','Show-up rate bahut low hai'];
+  if(/whatsapp|automation/i.test(u)) return ['Setup kaise karein?','Sequence kya hona chahiye?','Kaunsa tool best hai?','Kitna time lagta hai?'];
+  if(/funnel|tofu|mofu|bofu/i.test(u)) return ['Sirf bottom funnel chal raha hai','Retargeting set karna hai','Budget split samajhna hai','Funnel build karwana hai'];
+  if(/price|pricing|plan|₹/i.test(u)) return ['Growth Partner ke baare mein batao','Performance Partner samajhna hai','Pehle free call karni hai','Ad spend alag se kitna?'];
+  if(/result|case|proof/i.test(u)) return ['Mere jaisi industry ka case?','3 months mein kya expect karein?','Free audit book karna hai','Aur results dikhao'];
+  /* Default — feel like natural next steps */
+  return ['Mera business batata hun','Ek problem hai — help chahiye','Free strategy call kaise book karein?','Pehle thoda samajhna hai'];
 }
 
 /* ── UI Functions ── */
@@ -2662,9 +2946,10 @@ function toggleAIDrawer(){
 function initAIDChat(){
   aidEl.msgs().innerHTML='';
   aidHistory=[];
-  const welcome=`👋 **Namaste!** Main hun **Ria** — JustDigital.Clicks ka Marketing AI Assistant.\n\nMeta Ads, Google Ads, ROAS, leads, WhatsApp automation, pricing — **kuch bhi poochho, Hindi ya English mein!**\n\nAapka marketing challenge kya hai? 🚀`;
+  /* Warm, human greeting — NOT a service list */
+  const welcome=`Hey! 👋 Main hun **Pooja** — JustDigital.Clicks ki AI Marketing Strategist.\n\nAap kaunsa business run karte ho? 😊`;
   renderAIMsg('ai',mdHTML(welcome));
-  setSugg(['Meta Ads ROAS kaise improve karein?','CBO vs ABO — kya difference hai?','WhatsApp automation kaise kaam karta hai?','Mere liye kaunsa plan best hai?']);
+  setSugg(['E-commerce / D2C brand hai','Real estate mein hun','Fitness / coaching business','Doosri industry hai']);
 }
 
 function clearAIChat(){
@@ -2685,9 +2970,34 @@ async function sendAIMsg(){
   aidEl.send().disabled=true;
   const typEl=showTypingIndicator();
 
-  /* Built-in KB — always answers instantly, no API/proxy needed */
-  await new Promise(r=>setTimeout(r, 800+Math.random()*700));
-  const reply=getKBAnswer(text);
+  let reply = null;
+
+  /* ── Try /api/chat (Vercel serverless — API key safe on server) ── */
+  try{
+    const res = await Promise.race([
+      fetch('/api/chat',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          model:'claude-haiku-4-5-20251001',
+          max_tokens:600,
+          system:AID_SYSTEM,
+          messages:aidHistory
+        })
+      }),
+      new Promise((_,rej)=>setTimeout(()=>rej('timeout'),10000))
+    ]);
+    if(res.ok){
+      const d=await res.json();
+      if(d.content?.[0]?.text) reply=d.content[0].text;
+    }
+  }catch(e){ reply=null; }
+
+  /* ── Fallback: Built-in KB — always works, no API needed ── */
+  if(!reply){
+    await new Promise(r=>setTimeout(r, 700+Math.random()*600));
+    reply=getKBAnswer(text);
+  }
 
   typEl.remove();
   aidHistory.push({role:'assistant',content:reply});
@@ -2742,6 +3052,180 @@ function mdHTML(t){
 
 document.getElementById('ai-fab').addEventListener('mouseenter',()=>document.body.classList.add('hov'));
 document.getElementById('ai-fab').addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+
+/* ═══════════════════════════════════════════════════════════
+   RITIKESH BOOKING DASHBOARD
+═══════════════════════════════════════════════════════════ */
+const MAKE_WEBHOOK_URL=''; /* Paste your Make.com webhook URL here */
+let dashTab='upcoming';
+
+function openRKDash(){
+  document.getElementById('rk-dash-overlay').style.display='flex';
+  renderDash();
+}
+function closeRKDash(){
+  document.getElementById('rk-dash-overlay').style.display='none';
+}
+function switchDashTab(tab){
+  dashTab=tab;
+  document.querySelectorAll('.rk-tab').forEach(t=>t.classList.remove('act'));
+  document.getElementById('rk-tab-'+tab).classList.add('act');
+  renderDash();
+}
+
+function renderDash(){
+  const all=bkGetAll().sort((a,b)=>new Date(a.dateKey)-new Date(b.dateKey));
+  document.getElementById('rk-total-count').textContent=all.length;
+  const today=new Date().toISOString().split('T')[0];
+  const now=new Date();
+
+  let filtered=all;
+  if(dashTab==='upcoming') filtered=all.filter(b=>new Date(b.dateKey)>=new Date(today));
+  else if(dashTab==='today') filtered=all.filter(b=>b.dateKey===today);
+
+  const body=document.getElementById('rk-dash-body');
+  if(filtered.length===0){
+    body.innerHTML=`<div class="rk-empty">
+      ${dashTab==='today'?'📅 Aaj koi booking nahi hai.':dashTab==='upcoming'?'✅ Koi upcoming booking nahi.':'📭 Abhi tak koi booking nahi.'}
+    </div>`;
+    return;
+  }
+
+  body.innerHTML=filtered.reverse().map(b=>{
+    const d=new Date(b.dateKey);
+    const isToday=b.dateKey===today;
+    const isPast=d<new Date(today);
+    const dateStr=d.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+    const badge=isToday?'today':isPast?'past':'';
+    const badgeText=isToday?'Today':isPast?'Completed':'Upcoming';
+    const waMsg=encodeURIComponent(
+      `Hi ${b.name}! 👋 Ritikesh here from JustDigital.Clicks.\n\n`+
+      `Confirming your strategy call:\n📅 ${dateStr}\n⏰ ${b.slot}\n`+
+      `Format: ${b.format}\n\nLooking forward to it! 🚀`
+    );
+    return `<div class="rk-bk-card">
+      <div>
+        <div class="rk-bk-date">📅 ${dateStr} · ⏰ ${b.slot}</div>
+        <div class="rk-bk-name">${b.name||'—'} · ${b.biz||'—'}</div>
+        <div class="rk-bk-meta">
+          📱 ${b.phone||'—'} &nbsp;|&nbsp; ✉️ ${b.email||'—'}<br>
+          🏷️ ${b.industry||'—'} &nbsp;|&nbsp; 💰 ${b.budget||'—'}<br>
+          🎯 ${(b.challenge||'').substring(0,80)}${b.challenge&&b.challenge.length>80?'...':''}
+        </div>
+        <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+          <a href="https://wa.me/${(b.phone||'').replace(/[^0-9]/g,'')}?text=${waMsg}" target="_blank" style="
+            font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;
+            background:rgba(34,208,122,.1);border:1px solid rgba(34,208,122,.2);
+            color:var(--green);text-decoration:none;
+          ">📲 WhatsApp</a>
+          <a href="mailto:${b.email}?subject=Your Strategy Call – ${dateStr}&body=Hi ${b.name},%0A%0AConfirming your 30-min strategy call on ${dateStr} at ${b.slot}.%0A%0ALooking forward to it!%0A%0A– Ritikesh | JustDigital.Clicks" style="
+            font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;
+            background:rgba(59,158,255,.1);border:1px solid rgba(59,158,255,.2);
+            color:var(--blue);text-decoration:none;
+          ">✉️ Email</a>
+        </div>
+      </div>
+      <span class="rk-bk-badge ${badge}">${badgeText}</span>
+    </div>`;
+  }).join('');
+}
+
+function exportBookings(){
+  const all=bkGetAll();
+  if(!all.length){alert('Koi bookings nahi hain abhi.');return;}
+  const hdr='ID,Date,Time,Name,Business,Industry,Phone,Email,Budget,Challenge,Format,Booked At';
+  const rows=all.map(b=>[
+    b.id,b.dateKey,b.slot,
+    `"${(b.name||'').replace(/"/g,'""')}"`,
+    `"${(b.biz||'').replace(/"/g,'""')}"`,
+    `"${(b.industry||'').replace(/"/g,'""')}"`,
+    b.phone,b.email,
+    `"${(b.budget||'').replace(/"/g,'""')}"`,
+    `"${(b.challenge||'').replace(/"/g,'""')}"`,
+    b.format,b.bookedAt
+  ].join(','));
+  const csv=hdr+'\n'+rows.join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='justdigital_bookings_'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click();
+}
+
+function clearAllBookings(){
+  if(!confirm('Sab bookings delete kar dein? Yeh undo nahi ho sakta.')) return;
+  localStorage.removeItem(BK_KEY);
+  localStorage.removeItem('jdc_bk_details_v1');
+  bookedSlots={};
+  if(selDate) renderSlots(selDate);
+  renderDash();
+}
+
+/* ── Auto notify via Make.com webhook when booking confirmed ── */
+async function notifyMakeWebhook(bookingData){
+  /* Sends to /api/notify → Make.com → WhatsApp + Email auto */
+  try{
+    await fetch('/api/notify',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        event:'new_booking',
+        name:bookingData.name,
+        business:bookingData.biz,
+        date:bookingData.date,
+        time:bookingData.time,
+        phone:bookingData.phone,
+        email:bookingData.email,
+        format:bookingData.fmt,
+        budget:bookingData.budget,
+        challenge:bookingData.agenda,
+        industry:bookingData.industry||'',
+        source:'justdigital.clicks'
+      })
+    });
+  }catch(e){/* silent fail */}
+}
+
+/* ═══════════════════════════════════════════════════════
+   RAZORPAY PAYMENT GATEWAY
+   Setup: razorpay.com → Dashboard → Settings → API Keys
+   Add your Key ID below (starts with rzp_live_ or rzp_test_)
+════════════════════════════════════════════════════════ */
+const RZP_KEY = 'rzp_live_SQQiEUtFKgzzOm'; /* ← Replace with your Razorpay Key ID */
+
+const PLANS = {
+  growth:      { name:'Growth Partner — JustDigital.Clicks',      amount:499900,  desc:'2-3 Performance Campaigns · AI Creative · Monthly Call' },
+  performance: { name:'Performance Partner — JustDigital.Clicks', amount:1299900, desc:'Full Automation · WhatsApp Flows · Bi-weekly Calls' },
+  scale:       { name:'Scale Partner — JustDigital.Clicks',       amount:2499900, desc:'Meta + Google Full System · Dedicated Manager' }
+};
+
+function openRazorpay(planKey){
+  if(!RZP_KEY || RZP_KEY.includes('XXXXXXXXXX')){
+    /* Fallback — WhatsApp if Razorpay not configured */
+    const msgs={growth:'Growth Partner (₹4,999/mo)',performance:'Performance Partner (₹12,999/mo)',scale:'Scale Partner (₹24,999/mo)'};
+    window.open('https://wa.me/918756773118?text=Hi%20Ritikesh!%20I%20want%20to%20start%20with%20'+encodeURIComponent(msgs[planKey]||'a plan')+'.%20Please%20share%20payment%20details.','_blank');
+    return;
+  }
+  const plan = PLANS[planKey];
+  const options = {
+    key: RZP_KEY,
+    amount: plan.amount, /* paise mein — 499900 = ₹4,999 */
+    currency: 'INR',
+    name: 'JustDigital.Clicks',
+    description: plan.desc,
+    image: 'https://justdigital.clicks/favicon.ico',
+    prefill: {},
+    theme: { color:'#7c6dfa' },
+    modal: { backdropclose: false },
+    handler: function(response){
+      /* Payment success */
+      const msg = 'Payment%20successful!%20ID:%20'+response.razorpay_payment_id+'%20Plan:%20'+encodeURIComponent(plan.name);
+      window.open('https://wa.me/918756773118?text='+msg,'_blank');
+      alert('Payment successful! Payment ID: '+response.razorpay_payment_id+'\n\nRitikesh will contact you within 2 hours to start onboarding. 🚀');
+    }
+  };
+  const rzp = new Razorpay(options);
+  rzp.open();
+}
 </script>
 </body>
 </html>
