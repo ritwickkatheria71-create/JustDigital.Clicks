@@ -1572,96 +1572,383 @@ footer{
 </section>
 
 <!-- ═══════════════ PRICING ═══════════════ -->
+<style>
+/* ── NEW 4-PLAN PRICING ── */
+.new-plans-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:20px;margin-top:52px;
+}
+.nplan{
+  background:var(--bg1);border:1px solid var(--border);
+  border-radius:18px;overflow:hidden;
+  transition:border-color .3s,box-shadow .3s;
+  cursor:default;
+}
+.nplan:hover{border-color:rgba(124,109,250,.25);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.nplan.hot{
+  border:1.5px solid rgba(124,109,250,.4);
+  background:linear-gradient(160deg,rgba(124,109,250,.08) 0%,var(--bg2) 100%);
+  box-shadow:0 0 40px rgba(124,109,250,.12);
+}
+/* Plan header */
+.nplan-head{padding:28px 28px 22px;border-bottom:1px solid var(--border)}
+.nplan.hot .nplan-head{border-bottom-color:rgba(124,109,250,.15)}
+.nplan-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:12px}
+.nplan-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:5px}
+.nplan.hot .nplan-label{color:rgba(165,148,255,.6)}
+.nplan-name{font-size:21px;font-weight:800;letter-spacing:-.03em;color:var(--text)}
+.nplan-badge{background:linear-gradient(90deg,var(--accent),#5b4de0);color:#fff;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:100px;white-space:nowrap;margin-top:4px;display:inline-block}
+.nplan-price-wrap{text-align:right;flex-shrink:0}
+.nplan-price{font-family:var(--font-serif);font-size:42px;font-style:italic;color:var(--text);line-height:1;letter-spacing:-.02em}
+.nplan.hot .nplan-price{color:var(--accent2)}
+.nplan-per{font-size:12px;color:var(--dim);margin-top:3px}
+.nplan-tagline{font-size:13.5px;color:var(--muted);line-height:1.65;font-style:italic}
+/* Steps */
+.nplan-steps{padding:20px 28px;display:flex;flex-direction:column;gap:16px}
+.nplan-step{display:flex;gap:14px;align-items:flex-start}
+.nplan-step-num{
+  width:28px;height:28px;border-radius:8px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;letter-spacing:.02em;
+}
+.nplan-step-num.s1{background:rgba(59,158,255,.12);border:1px solid rgba(59,158,255,.22);color:var(--blue)}
+.nplan-step-num.s2{background:rgba(124,109,250,.12);border:1px solid rgba(124,109,250,.22);color:var(--accent2)}
+.nplan-step-num.s3{background:rgba(34,208,122,.1);border:1px solid rgba(34,208,122,.2);color:var(--green)}
+.nplan-step-body{}
+.nplan-step-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:.02em;text-transform:uppercase}
+.nplan-step-items{display:flex;flex-direction:column;gap:4px}
+.nplan-si{display:flex;align-items:baseline;gap:7px;font-size:13px;color:var(--muted);line-height:1.55}
+.nplan-si-ico{font-size:13px;flex-shrink:0}
+/* Result highlight */
+.nplan-result{
+  background:rgba(34,208,122,.07);border-top:1px solid rgba(34,208,122,.14);
+  padding:14px 28px;
+  display:flex;align-items:center;gap:10px;
+}
+.nplan.hot .nplan-result{background:rgba(124,109,250,.08);border-top-color:rgba(124,109,250,.15)}
+.nplan-result-ico{font-size:20px;flex-shrink:0}
+.nplan-result-text{font-size:13px;font-weight:600;color:var(--green);line-height:1.5}
+.nplan.hot .nplan-result-text{color:var(--accent2)}
+.nplan-result-sub{font-size:11.5px;color:var(--dim);margin-top:2px;font-weight:400}
+/* CTA */
+.nplan-cta-wrap{padding:16px 28px 24px}
+.nplan-example{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  padding:11px 14px;margin-bottom:14px;
+  font-size:12px;color:var(--dim);line-height:1.6;
+}
+.nplan.hot .nplan-example{background:rgba(124,109,250,.06);border-color:rgba(124,109,250,.15)}
+.nplan-example strong{color:var(--muted);font-weight:600}
+.nplan-cta{
+  display:block;text-align:center;font-size:13px;font-weight:700;
+  padding:13px;border-radius:10px;cursor:none;
+  border:1px solid var(--border2);color:var(--muted);
+  transition:all .25s var(--ease);letter-spacing:-.01em;
+}
+.nplan-cta:hover{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 0 20px rgba(124,109,250,.3)}
+.nplan.hot .nplan-cta{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 0 20px rgba(124,109,250,.3)}
+.nplan.hot .nplan-cta:hover{background:#6a5de8;box-shadow:0 0 30px rgba(124,109,250,.5)}
+/* Payment strip */
+.pay-methods-strip{
+  margin-top:24px;padding:18px 24px;
+  background:var(--bg1);border:1px solid rgba(124,109,250,.14);
+  border-radius:14px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+}
+.pay-methods-strip-label{font-size:12px;font-weight:700;color:var(--text);letter-spacing:-.01em;flex-shrink:0}
+.pay-methods-badges{display:flex;gap:8px;flex-wrap:wrap}
+.pay-badge{background:rgba(124,109,250,.09);border:1px solid rgba(124,109,250,.18);border-radius:7px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--accent2)}
+.pay-gst-note{margin-left:auto;font-size:11px;color:var(--dim);white-space:nowrap}
+@media(max-width:900px){.new-plans-grid{grid-template-columns:1fr}}
+</style>
+
 <section class="section pricing-section" id="pricing">
   <div class="inner">
-    <div class="section-badge rv">💳 Investment</div>
-    <h2 class="section-h2 rv">Performance<br><em>Partnership Plans</em></h2>
-    <p class="section-sub rv" style="margin-bottom:0">Transparent pricing. Zero hidden costs. We grow when you grow.</p>
-    <div class="price-toggle rv d1">
-      <span class="tl on" id="lm">Monthly</span>
-      <button class="tsw" id="ptgl" onclick="togglePrice()"></button>
-      <span class="tl" id="lq">Quarterly</span>
-      <span class="save-badge" id="sbadge" style="display:none">Save 15%</span>
-    </div>
-    <div class="plans">
-      <div class="plan rv">
-        <div class="plan-tier">Starter</div>
-        <div class="plan-name">Growth Partner</div>
-        <div class="plan-tag">Aapki Growth Journey ka pehla kadam</div>
-        <div class="plan-price" data-m="₹4,999" data-q="₹4,249">₹4,999</div>
-        <div class="plan-per">/month + GST</div>
-        <div class="plan-note">☕ Ek chai se bhi sasta — sirf ₹166/day · 3-month minimum</div>
-        <div class="divider"></div>
-        <div class="plan-feats">
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>2–3 Performance Campaigns</div>
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>AI Creative Support</div>
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>Conversion Tracking Setup</div>
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>Monthly Strategy Call</div>
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>Monthly Performance Report</div>
+    <div class="section-badge rv">💳 Plans &amp; Pricing</div>
+    <h2 class="section-h2 rv">Seedha Simple.<br><em>Zero Confusion.</em></h2>
+    <p class="section-sub rv">Kaunsa plan aapke liye sahi hai — yeh samajhna aasaan hai. Har plan mein exactly kya hoga, step-by-step.</p>
+
+    <div class="new-plans-grid">
+
+      <!-- PLAN 1: LOCAL LEADS ₹2,999 -->
+      <div class="nplan rv">
+        <div class="nplan-head">
+          <div class="nplan-top">
+            <div>
+              <div class="nplan-label">Plan 01 — Starter</div>
+              <div class="nplan-name">Local Leads</div>
+            </div>
+            <div class="nplan-price-wrap">
+              <div class="nplan-price">₹2,999</div>
+              <div class="nplan-per">/month + GST</div>
+            </div>
+          </div>
+          <div class="nplan-tagline">Un businesses ke liye jo apne area mein zyada customers chahte hain — bina complicated ads ke.</div>
         </div>
-        <div class="plan-disc">Ad spend billed separately.</div>
-        <a href="#" onclick="openRazorpay('growth')" class="plan-cta">Pay Now — ₹4,999</a>
-      </div>
-      <div class="plan hot rv d1">
-        <div class="plan-rec">Most Recommended</div>
-        <div class="plan-tier">Growth</div>
-        <div class="plan-name">Performance Partner</div>
-        <div class="plan-tag">Sabse popular — Maximum ROI ke liye</div>
-        <div class="plan-price" data-m="₹12,999" data-q="₹11,049">₹12,999</div>
-        <div class="plan-per">/month + 5% performance bonus</div>
-        <div class="plan-note">Min. ₹75K/month ad spend</div>
-        <div class="divider"></div>
-        <div class="plan-feats">
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>Multi-Campaign System</div>
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>Advanced Retargeting Funnels</div>
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>Full Automation Layer</div>
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>Bi-weekly Optimisation Calls</div>
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>WhatsApp Automation</div>
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>Real-time Revenue Dashboard</div>
+
+        <div class="nplan-steps">
+          <div class="nplan-step">
+            <div class="nplan-step-num s1">01</div>
+            <div class="nplan-step-body">
+              <div class="nplan-step-title">Pehle Hum Check Karenge</div>
+              <div class="nplan-step-items">
+                <div class="nplan-si"><span class="nplan-si-ico">🔍</span>Google listing audit — 'near me' searches mein aap dikhte hain ya nahi</div>
+                <div class="nplan-si"><span class="nplan-si-ico">📱</span>WhatsApp readiness check — customers ke liye properly setup hai kya</div>
+              </div>
+            </div>
+          </div>
+          <div class="nplan-step">
+            <div class="nplan-step-num s2">02</div>
+            <div class="nplan-step-body">
+              <div class="nplan-step-title">Hum Yeh Banayenge</div>
+              <div class="nplan-step-items">
+                <div class="nplan-si"><span class="nplan-si-ico">📍</span>Google location #1 ranking — jab koi 'near me' search kare, aap pehle</div>
+                <div class="nplan-si"><span class="nplan-si-ico">💬</span>WhatsApp auto-reply — customer message kare, turant jawab milega</div>
+                <div class="nplan-si"><span class="nplan-si-ico">📅</span>Online booking system — 24/7 self-appointment, bina call ke</div>
+              </div>
+            </div>
+          </div>
+          <div class="nplan-step">
+            <div class="nplan-step-num s3">03</div>
+            <div class="nplan-step-body">
+              <div class="nplan-step-title">Result Jo Aapko Milega</div>
+              <div class="nplan-step-items">
+                <div class="nplan-si"><span class="nplan-si-ico">📈</span>20+ WhatsApp enquiries per month — real customers, not just clicks</div>
+                <div class="nplan-si"><span class="nplan-si-ico">📊</span>Weekly report — 'Is hafte 8 appointments aaye, yahan se aaye'</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="plan-disc">We earn more when you earn more.</div>
-        <a href="#" onclick="openRazorpay('performance')" class="plan-cta">Pay Now — ₹12,999</a>
-      </div>
-      <div class="plan rv d2">
-        <div class="plan-tier">Enterprise</div>
-        <div class="plan-name">Scale Partner</div>
-        <div class="plan-tag">Maximum Scale — Poora System</div>
-        <div class="plan-price" data-m="₹24,999" data-q="₹21,249">₹24,999</div>
-        <div class="plan-per">/month + 8–12% revenue share</div>
-        <div class="plan-note">Min. ₹1L+/month ad spend</div>
-        <div class="divider"></div>
-        <div class="plan-feats">
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>Meta + Google Full System</div>
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>Complete Funnel Architecture</div>
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>Dedicated Growth Manager</div>
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>Full CRM + WhatsApp Pipeline</div>
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>Custom Revenue Analytics</div>
-          <div class="pf"><span class="pf-ck"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg></span>AI Optimisation Engine</div>
+
+        <div class="nplan-result">
+          <span class="nplan-result-ico">💰</span>
+          <div>
+            <div class="nplan-result-text">5–10 extra customers = ₹25,000+ extra revenue/month</div>
+            <div class="nplan-result-sub">Expected outcome based on real client data</div>
+          </div>
         </div>
-        <div class="plan-disc">Deep integration, maximum compounding.</div>
-        <a href="#" onclick="openRazorpay('scale')" class="plan-cta">Apply Now →</a>
+
+        <div class="nplan-cta-wrap">
+          <div class="nplan-example">
+            <strong>Example:</strong> Gorakhpur mein salon hai — Google pe 'best salon Gorakhpur' mein top pe laayenge + WhatsApp auto-booking. Pehle mahine mein 15-20 new customers.
+          </div>
+          <a href="https://wa.me/918756773118?text=Hi%20Ritikesh!%20Local%20Leads%20plan%20%E2%82%B92%2C999%20ke%20baare%20mein%20baat%20karni%20hai." target="_blank" class="nplan-cta">Start Local Leads — ₹2,999 →</a>
+        </div>
       </div>
-    </div>
-    <!-- Payment Methods Strip -->
-    <div class="rv" style="margin-top:32px;padding:20px 28px;background:var(--bg1);border:1px solid rgba(124,109,250,.15);border-radius:16px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
-      <div style="font-size:13px;font-weight:700;color:var(--text);letter-spacing:-.01em">Payment Methods</div>
-      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-        <span style="background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--accent2)">🏦 Bank Transfer (NEFT/IMPS)</span>
-        <span style="background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--accent2)">📱 UPI</span>
-        <span style="background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--accent2)">💳 Razorpay (Card/EMI)</span>
-        <span style="background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--accent2)">🌐 International Wire</span>
+
+      <!-- PLAN 2: FACEBOOK ADS ₹4,999 -->
+      <div class="nplan rv d1">
+        <div class="nplan-head">
+          <div class="nplan-top">
+            <div>
+              <div class="nplan-label">Plan 02 — Growth</div>
+              <div class="nplan-name">Facebook Ads</div>
+            </div>
+            <div class="nplan-price-wrap">
+              <div class="nplan-price">₹4,999</div>
+              <div class="nplan-per">/month + GST</div>
+            </div>
+          </div>
+          <div class="nplan-tagline">Un businesses ke liye jo Facebook aur Instagram ke through zyada logon tak pahunchna chahte hain.</div>
+        </div>
+
+        <div class="nplan-steps">
+          <div class="nplan-step">
+            <div class="nplan-step-num s1">01</div>
+            <div class="nplan-step-body">
+              <div class="nplan-step-title">Pehle Hum Check Karenge</div>
+              <div class="nplan-step-items">
+                <div class="nplan-si"><span class="nplan-si-ico">🔍</span>Competitors ke ads ka analysis — same audience better way mein target karenge</div>
+                <div class="nplan-si"><span class="nplan-si-ico">📊</span>Website pe tracking setup — pata chalega kaun sa ad kaam kar raha hai</div>
+              </div>
+            </div>
+          </div>
+          <div class="nplan-step">
+            <div class="nplan-step-num s2">02</div>
+            <div class="nplan-step-body">
+              <div class="nplan-step-title">Hum Yeh Banayenge</div>
+              <div class="nplan-step-items">
+                <div class="nplan-si"><span class="nplan-si-ico">🎨</span>10 AI-generated creatives/month — professional look, bina photoshoot ke</div>
+                <div class="nplan-si"><span class="nplan-si-ico">📢</span>2 targeted campaigns — new customers + purane customers wapas laana</div>
+                <div class="nplan-si"><span class="nplan-si-ico">📞</span>Call tracking — 'Is ad se 12 phone calls aaye' — exact data</div>
+              </div>
+            </div>
+          </div>
+          <div class="nplan-step">
+            <div class="nplan-step-num s3">03</div>
+            <div class="nplan-step-body">
+              <div class="nplan-step-title">Result Jo Aapko Milega</div>
+              <div class="nplan-step-items">
+                <div class="nplan-si"><span class="nplan-si-ico">👥</span>30–50 daily website visitors — real interested people</div>
+                <div class="nplan-si"><span class="nplan-si-ico">📞</span>15–25 tracked phone calls per month</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nplan-result">
+          <span class="nplan-result-ico">💰</span>
+          <div>
+            <div class="nplan-result-text">₹20K ad spend mein 18+ customers = ₹75,000+ extra revenue</div>
+            <div class="nplan-result-sub">Ad spend separately billed — management fee ₹4,999</div>
+          </div>
+        </div>
+
+        <div class="nplan-cta-wrap">
+          <div class="nplan-example">
+            <strong>Example:</strong> Coaching center hai — Facebook pe parents ko target karenge jo bacchon ke liye tuition dhundh rahe hain. AI creatives, parent ka interest, call aaya, admission hua.
+          </div>
+          <a href="https://wa.me/918756773118?text=Hi%20Ritikesh!%20Facebook%20Ads%20plan%20%E2%82%B94%2C999%20ke%20baare%20mein%20baat%20karni%20hai." target="_blank" class="nplan-cta">Start Facebook Ads — ₹4,999 →</a>
+        </div>
       </div>
-      <div style="margin-left:auto;font-size:11px;color:var(--dim)">GST Invoice provided · 3-month lock-in</div>
+
+      <!-- PLAN 3: FULL SYSTEM ₹12,999 -->
+      <div class="nplan hot rv">
+        <div class="nplan-head">
+          <div class="nplan-top">
+            <div>
+              <div class="nplan-label">Plan 03 — Most Popular</div>
+              <div class="nplan-name">Full System</div>
+            </div>
+            <div class="nplan-price-wrap">
+              <div class="nplan-price">₹12,999</div>
+              <div class="nplan-per">/month + GST</div>
+              <div class="nplan-badge" style="font-size:9px;padding:3px 10px;margin-top:6px">🔥 Best Value</div>
+            </div>
+          </div>
+          <div class="nplan-tagline">Complete digital growth machine — Facebook + Google + WhatsApp sab ek saath. Seriously scale karna chahne walon ke liye.</div>
+        </div>
+
+        <div class="nplan-steps">
+          <div class="nplan-step">
+            <div class="nplan-step-num s1">01</div>
+            <div class="nplan-step-body">
+              <div class="nplan-step-title">Pehle Hum Check Karenge</div>
+              <div class="nplan-step-items">
+                <div class="nplan-si"><span class="nplan-si-ico">🔍</span>Pura marketing audit — kahan paise waste ho rahe hain, opportunity kahaan hai</div>
+                <div class="nplan-si"><span class="nplan-si-ico">📊</span>Competitors analysis — woh kya kar rahe hain jo aap nahi kar rahe</div>
+              </div>
+            </div>
+          </div>
+          <div class="nplan-step">
+            <div class="nplan-step-num s2">02</div>
+            <div class="nplan-step-body">
+              <div class="nplan-step-title">Hum Yeh Banayenge</div>
+              <div class="nplan-step-items">
+                <div class="nplan-si"><span class="nplan-si-ico">🌐</span>FB + Google + Instagram — teen platforms pe simultaneously</div>
+                <div class="nplan-si"><span class="nplan-si-ico">🤖</span>WhatsApp 24/7 automation — lead aaya, auto follow-up, appointment book</div>
+                <div class="nplan-si"><span class="nplan-si-ico">📊</span>Live dashboard — aaj kitne leads, kitna revenue — real time</div>
+                <div class="nplan-si"><span class="nplan-si-ico">📅</span>Har 15 din strategy call — kya improve karna hai, kya chal raha hai</div>
+              </div>
+            </div>
+          </div>
+          <div class="nplan-step">
+            <div class="nplan-step-num s3">03</div>
+            <div class="nplan-step-body">
+              <div class="nplan-step-title">Result Jo Aapko Milega</div>
+              <div class="nplan-step-items">
+                <div class="nplan-si"><span class="nplan-si-ico">📈</span>100+ daily visitors across all platforms</div>
+                <div class="nplan-si"><span class="nplan-si-ico">🤝</span>50+ qualified leads per month</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nplan-result">
+          <span class="nplan-result-ico">💰</span>
+          <div>
+            <div class="nplan-result-text">Expected ₹2.5 lakh+ extra monthly revenue</div>
+            <div class="nplan-result-sub">Minimum ₹75K/month ad spend recommended</div>
+          </div>
+        </div>
+
+        <div class="nplan-cta-wrap">
+          <div class="nplan-example">
+            <strong>Example:</strong> Real estate business — Facebook pe property ads + Google pe 'flat for sale Kanpur' + WhatsApp pe buyer auto-follow-up. Aapko sirf ready buyer se baat karni hogi.
+          </div>
+          <a href="https://wa.me/918756773118?text=Hi%20Ritikesh!%20Full%20System%20plan%20%E2%82%B912%2C999%20ke%20baare%20mein%20baat%20karni%20hai." target="_blank" class="nplan-cta">Start Full System — ₹12,999 →</a>
+        </div>
+      </div>
+
+      <!-- PLAN 4: ENTERPRISE SCALE ₹24,999 -->
+      <div class="nplan rv d1">
+        <div class="nplan-head">
+          <div class="nplan-top">
+            <div>
+              <div class="nplan-label">Plan 04 — Enterprise</div>
+              <div class="nplan-name">Enterprise Scale</div>
+            </div>
+            <div class="nplan-price-wrap">
+              <div class="nplan-price">₹24,999</div>
+              <div class="nplan-per">/month + revenue share</div>
+            </div>
+          </div>
+          <div class="nplan-tagline">Jo already grow kar rahe hain aur ab full speed se scale karna chahte hain. Dedicated manager, custom system.</div>
+        </div>
+
+        <div class="nplan-steps">
+          <div class="nplan-step">
+            <div class="nplan-step-num s1">01</div>
+            <div class="nplan-step-body">
+              <div class="nplan-step-title">Dedicated Growth Manager</div>
+              <div class="nplan-step-items">
+                <div class="nplan-si"><span class="nplan-si-ico">👤</span>Sirf aapke account pe focus — ek dedicated person, daily availability</div>
+                <div class="nplan-si"><span class="nplan-si-ico">📞</span>Personal weekly review call — performance, strategy, scaling decisions</div>
+              </div>
+            </div>
+          </div>
+          <div class="nplan-step">
+            <div class="nplan-step-num s2">02</div>
+            <div class="nplan-step-body">
+              <div class="nplan-step-title">Custom System Build</div>
+              <div class="nplan-step-items">
+                <div class="nplan-si"><span class="nplan-si-ico">🔧</span>Custom CRM — aapke business ke hisaab se banaya gaya system</div>
+                <div class="nplan-si"><span class="nplan-si-ico">📊</span>Custom analytics dashboard — daily revenue tracking, live</div>
+                <div class="nplan-si"><span class="nplan-si-ico">🤝</span>Revenue share model — hum tab zyada kamaate jab aap zyada kamaate</div>
+              </div>
+            </div>
+          </div>
+          <div class="nplan-step">
+            <div class="nplan-step-num s3">03</div>
+            <div class="nplan-step-body">
+              <div class="nplan-step-title">Maximum Compounding Growth</div>
+              <div class="nplan-step-items">
+                <div class="nplan-si"><span class="nplan-si-ico">🚀</span>Full Meta + Google + automation stack — poora system ek saath</div>
+                <div class="nplan-si"><span class="nplan-si-ico">📈</span>Deep integration — campaigns, CRM, analytics, WhatsApp — connected</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nplan-result">
+          <span class="nplan-result-ico">💰</span>
+          <div>
+            <div class="nplan-result-text">Target: ₹10 lakh+ monthly business growth</div>
+            <div class="nplan-result-sub">Application only — min. ₹1L+/month ad spend required</div>
+          </div>
+        </div>
+
+        <div class="nplan-cta-wrap">
+          <div class="nplan-example">
+            <strong>For whom:</strong> D2C brands, real estate developers, education companies, clinics — jo seriously scale karna chahte hain aur marketing ko seriously lete hain.
+          </div>
+          <a href="https://wa.me/918756773118?text=Hi%20Ritikesh!%20Enterprise%20Scale%20plan%20%E2%82%B924%2C999%20ke%20liye%20apply%20karna%20chahta%20hun." target="_blank" class="nplan-cta">Apply for Enterprise → </a>
+        </div>
+      </div>
+
+    </div><!-- /new-plans-grid -->
+
+    <!-- Payment Methods -->
+    <div class="pay-methods-strip rv">
+      <div class="pay-methods-strip-label">Payment Methods</div>
+      <div class="pay-methods-badges">
+        <span class="pay-badge">🏦 NEFT / IMPS</span>
+        <span class="pay-badge">📱 UPI</span>
+        <span class="pay-badge">💳 Razorpay (Card / EMI)</span>
+        <span class="pay-badge">🌐 International Wire</span>
+      </div>
+      <div class="pay-gst-note">GST Invoice · Ad spend separate</div>
     </div>
 
-    <div class="enterprise rv" style="margin-top:1px">
-      <div>
-        <div class="ent-name">Strategic Profit Partner <span class="ent-badge">Application Only</span></div>
-        <p class="ent-desc">For brands generating ₹50L+ monthly revenue. Custom equity-aligned partnership directly with Ritikesh — revenue share model, maximum compounding growth.</p>
-        <p style="font-size:12px;color:var(--dim);font-style:italic;margin-top:8px">₹50L+ Monthly Revenue wale Brands ke liye — Ritikesh ke saath Direct Deep Partnership.</p>
-      </div>
-      <a href="https://wa.me/918756773118?text=Hi%20Ritikesh!%20Strategic%20Profit%20Partner%20application." target="_blank" class="btn-primary" style="flex-shrink:0;white-space:nowrap">Apply for Partnership</a>
-    </div>
   </div>
 </section>
 
